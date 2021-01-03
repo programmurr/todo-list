@@ -1,4 +1,4 @@
-// import { format } from 'date-fns';
+import { format } from 'date-fns';
 import './styles/style.css';
 import DOM from './scripts/dom.js';
 
@@ -9,6 +9,8 @@ import DOM from './scripts/dom.js';
 	newTodo.addEventListener('click', _makeNewTodo);
 
 	function _makeNewTodo() {
-		DOM().newTodoForm();
+		const date = format(new Date(Date.now()), 'yyyy-MM-dd').toString();
+		// const today =
+		DOM().newTodoForm(date);
 	}
 })();
