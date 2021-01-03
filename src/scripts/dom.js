@@ -1,12 +1,8 @@
 const DOM = () => {
+	const subContent = document.querySelector('#sub-content');
+	let todoValues = [];
+
 	function newTodoForm(date) {
-		// title
-		// description
-		// dueDate
-		// priority
-
-		const subContent = document.querySelector('#sub-content');
-
 		if (subContent.children.length === 0) {
 			const newTodoContainer = document.createElement('div');
 			newTodoContainer.className = 'new-input';
@@ -77,11 +73,10 @@ const DOM = () => {
 			priority3Label.for = 'priority3';
 			priority3Label.textContent = 'Priority 3';
 
-			const submitButton = document.createElement('input');
+			const submitButton = document.createElement('button');
 			submitButton.id = 'new-submit-button';
 			submitButton.className = 'new-input';
-			submitButton.type = 'submit';
-			submitButton.value = 'Create';
+			submitButton.textContent = 'Create';
 
 			const cancelButton = document.createElement('button');
 			cancelButton.className = 'new-input';
@@ -106,7 +101,23 @@ const DOM = () => {
 
 			subContent.appendChild(newTodoContainer);
 
+			submitButton.addEventListener('click', _submitForm);
+
 			cancelButton.addEventListener('click', _removeForm);
+		}
+
+		function _submitForm() {
+			(function() {
+				const inputs = document.querySelectorAll('input');
+
+				inputs.forEach(function(input) {
+					if (input.type === 'text' || input.type === 'date') {
+						todoValues.push(input.value);
+					} else if (input.type === 'radio' && input.checked === true) {
+						todoValues.push(input.value);
+					}
+				});
+			})();
 		}
 
 		function _removeForm() {
@@ -114,7 +125,11 @@ const DOM = () => {
 		}
 	}
 
-	return { newTodoForm };
+	// Make event listener for create
+	// Make a new todo object using the form inputs
+	// Push that object to the array of Todos
+
+	return { newTodoForm, todoValues };
 };
 
 export default DOM;
