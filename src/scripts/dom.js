@@ -1,54 +1,58 @@
 const DOM = () => {
-	function newTodoForm(div) {
+	function newTodoForm() {
 		// title
 		// description
 		// dueDate
 		// priority
-		const newTodoContainer = document.createElement('div');
-		newTodoContainer.className = 'new-input';
-		newTodoContainer.id = 'new-todo-container';
 
-		const titleInput = document.createElement('input');
-		titleInput.type = 'text';
-		titleInput.className = 'new-input';
-		titleInput.id = 'title-input';
-		titleInput.name = 'title';
-		const titleLabel = document.createElement('label');
-		titleLabel.for = 'title';
-		titleLabel.className = 'new-input';
-		titleLabel.textContent = 'Title';
+		const subContent = document.querySelector('#sub-content');
 
-		const descriptionInput = document.createElement('input');
-		descriptionInput.type = 'text';
-		descriptionInput.className = 'new-input';
-		descriptionInput.id = 'description-input';
-		descriptionInput.name = 'description';
-		const descriptionLabel = document.createElement('label');
-		descriptionLabel.for = 'description';
-		descriptionLabel.className = 'new-input';
-		descriptionLabel.textContent = 'Description';
+		if (subContent.children.length === 0) {
+			_removeForm();
 
-		const cancelButton = document.createElement('button');
-		cancelButton.className = 'new-input';
-		cancelButton.id = 'cancel-new';
-		cancelButton.textContent = 'Cancel';
+			const newTodoContainer = document.createElement('div');
+			newTodoContainer.className = 'new-input';
+			newTodoContainer.id = 'new-todo-container';
 
-		titleLabel.appendChild(titleInput);
-		descriptionLabel.appendChild(descriptionInput);
+			const titleInput = document.createElement('input');
+			titleInput.type = 'text';
+			titleInput.className = 'new-input';
+			titleInput.id = 'title-input';
+			titleInput.name = 'title';
+			const titleLabel = document.createElement('label');
+			titleLabel.for = 'title';
+			titleLabel.className = 'new-input';
+			titleLabel.textContent = 'Title';
 
-		newTodoContainer.appendChild(titleLabel);
-		newTodoContainer.appendChild(descriptionLabel);
-		newTodoContainer.appendChild(cancelButton);
+			const descriptionInput = document.createElement('input');
+			descriptionInput.type = 'text';
+			descriptionInput.className = 'new-input';
+			descriptionInput.id = 'description-input';
+			descriptionInput.name = 'description';
+			const descriptionLabel = document.createElement('label');
+			descriptionLabel.for = 'description';
+			descriptionLabel.className = 'new-input';
+			descriptionLabel.textContent = 'Description';
 
-		div.appendChild(newTodoContainer);
+			const cancelButton = document.createElement('button');
+			cancelButton.className = 'new-input';
+			cancelButton.id = 'cancel-new';
+			cancelButton.textContent = 'Cancel';
 
-		console.log(div);
+			titleLabel.appendChild(titleInput);
+			descriptionLabel.appendChild(descriptionInput);
 
-		cancelButton.addEventListener('click', _removeForm);
+			newTodoContainer.appendChild(titleLabel);
+			newTodoContainer.appendChild(descriptionLabel);
+			newTodoContainer.appendChild(cancelButton);
+
+			subContent.appendChild(newTodoContainer);
+
+			cancelButton.addEventListener('click', _removeForm);
+		}
 
 		function _removeForm() {
-			div.innerHTML = '';
-			div.textContent = 'New Todo';
+			subContent.innerHTML = '';
 		}
 	}
 
