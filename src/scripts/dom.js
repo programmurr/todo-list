@@ -1,6 +1,5 @@
 const DOM = () => {
 	const subContent = document.querySelector('#sub-content');
-	let todoValues = [];
 
 	function newTodoForm(date) {
 		if (subContent.children.length === 0) {
@@ -107,17 +106,17 @@ const DOM = () => {
 		}
 
 		function _submitForm() {
-			(function() {
-				const inputs = document.querySelectorAll('input');
+			const inputs = document.querySelectorAll('input');
+			let todoValues = [];
 
-				inputs.forEach(function(input) {
-					if (input.type === 'text' || input.type === 'date') {
-						todoValues.push(input.value);
-					} else if (input.type === 'radio' && input.checked === true) {
-						todoValues.push(input.value);
-					}
-				});
-			})();
+			inputs.forEach(function(input) {
+				if (input.type === 'text' || input.type === 'date') {
+					todoValues.push(input.value);
+				} else if (input.type === 'radio' && input.checked === true) {
+					todoValues.push(input.value);
+				}
+			});
+			PubSub.publish('NEW_TODO', todoValues);
 		}
 
 		function _removeForm() {
@@ -125,11 +124,11 @@ const DOM = () => {
 		}
 	}
 
-	// Make event listener for create
-	// Make a new todo object using the form inputs
-	// Push that object to the array of Todos
+	function allTodosPage(allTodos) {
+		console.log(allTodos);
+	}
 
-	return { newTodoForm, todoValues };
+	return { newTodoForm, allTodosPage };
 };
 
 export default DOM;
