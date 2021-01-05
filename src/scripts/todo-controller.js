@@ -1,16 +1,20 @@
 import Todo from './todo';
 
-const todoController = function(_msg, array) {
-	let allTodos = [];
+class TodoController {
+	constructor() {}
 
-	(function(array) {
+	static _allTodos = [];
+
+	static getAllTodos() {
+		return this._allTodos;
+	}
+
+	static pushNewTodo(_msg, array) {
 		const newTodo = new Todo(array[0], array[1], array[2], array[3]);
-		allTodos.push(newTodo);
-	})(array);
+		this._allTodos.push(newTodo);
+	}
+}
+// May need to convert this into an instance
+PubSub.subscribe('NEW_TODO', TodoController.pushNewTodo);
 
-	return { allTodos };
-};
-
-PubSub.subscribe('NEW_TODO', todoController);
-
-export { todoController };
+export { TodoController };

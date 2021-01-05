@@ -2,11 +2,10 @@ import { format } from 'date-fns';
 import './styles/style.css';
 import DOM from './scripts/dom.js';
 import PubSub from 'pubsub-js';
-import todoController from './scripts/todo-controller';
+import TodoController from './scripts/todo-controller.js';
 
 (function() {
 	const dom = DOM();
-	const todoController = todoController();
 	const newTodoTab = document.querySelector('#new-todo');
 	const allTodosTab = document.querySelector('#all-todos');
 
@@ -19,7 +18,7 @@ import todoController from './scripts/todo-controller';
 	}
 
 	function _listAllTodos() {
-		const todosArray = todoController.allTodos;
-		dom.allTodosPage(todosArray);
+		const allTodosArray = TodoController.getAllTodos();
+		dom.allTodosPage(allTodosArray);
 	}
 })();
