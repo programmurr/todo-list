@@ -3,6 +3,7 @@ import './styles/style.css';
 import DOM from './scripts/dom.js';
 import PubSub from 'pubsub-js';
 import TodoController from './scripts/todo-controller.js';
+import { remove } from 'lodash';
 
 (function() {
 	const dom = DOM();
@@ -33,5 +34,10 @@ import TodoController from './scripts/todo-controller.js';
 		todoController.pushNewTodo(array);
 	}
 
+	function removeTodo(_msg, index) {
+		todoController.removeTodo(index);
+	}
+
 	PubSub.subscribe('NEW_TODO', pushTodosListener);
+	PubSub.subscribe('REMOVE_TODO', removeTodo);
 })();

@@ -146,9 +146,9 @@ const DOM = () => {
 			allTodosContainer.className = 'all-todos';
 			allTodosContainer.id = 'all-todos-container';
 
-			allTodos.forEach(function(todo) {
-				const todoList = document.createElement('ul');
-				todoList.className = 'todo-item';
+			for (let i = 0; i < allTodos.length; i++) {
+				const todoItem = document.createElement('ul');
+				todoItem.className = 'todo-item';
 				const title = document.createElement('li');
 				title.className = 'todo-item';
 				const description = document.createElement('li');
@@ -157,19 +157,31 @@ const DOM = () => {
 				dueDate.className = 'todo-item';
 				const priority = document.createElement('li');
 				priority.className = 'todo-item';
+				const removeButton = document.createElement('button');
+				removeButton.className = 'todo-item';
+				removeButton.textContent = 'Delete';
+				removeButton.id = parseInt(i);
 
-				title.textContent = todo.title;
-				description.textContent = todo.description;
-				dueDate.textContent = todo.dueDate;
-				priority.textContent = todo.priority;
+				title.textContent = allTodos[i].title;
+				description.textContent = allTodos[i].description;
+				dueDate.textContent = allTodos[i].dueDate;
+				priority.textContent = allTodos[i].priority;
 
-				todoList.appendChild(title);
-				todoList.appendChild(description);
-				todoList.appendChild(dueDate);
-				todoList.appendChild(priority);
+				todoItem.appendChild(title);
+				todoItem.appendChild(description);
+				todoItem.appendChild(dueDate);
+				todoItem.appendChild(priority);
+				todoItem.appendChild(removeButton);
 
-				allTodosContainer.appendChild(todoList);
-			});
+				allTodosContainer.appendChild(todoItem);
+
+				removeButton.addEventListener('click', _removeTodo);
+				// Continue work on refreshing the subcontent when a Todo is removed
+			}
+
+			function _removeTodo() {
+				PubSub.publish('REMOVE_TODO', this.id);
+			}
 
 			subContent.appendChild(allTodosContainer);
 		}
