@@ -6,6 +6,7 @@ import TodoController from './scripts/todo-controller.js';
 
 (function() {
 	const dom = DOM();
+	const todoController = new TodoController();
 	const newTodoTab = document.querySelector('#new-todo');
 	const allTodosTab = document.querySelector('#all-todos');
 
@@ -18,7 +19,13 @@ import TodoController from './scripts/todo-controller.js';
 	}
 
 	function _listAllTodos() {
-		const allTodosArray = TodoController.getAllTodos();
+		const allTodosArray = todoController.getAllTodos();
 		dom.allTodosPage(allTodosArray);
 	}
+
+	function pushTodosListener(_msg, array) {
+		todoController.pushNewTodo(array);
+	}
+
+	PubSub.subscribe('NEW_TODO', pushTodosListener);
 })();
