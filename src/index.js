@@ -9,9 +9,11 @@ import TodoController from './scripts/todo-controller.js';
 	const todoController = new TodoController();
 	const newTodoTab = document.querySelector('#new-todo');
 	const allTodosTab = document.querySelector('#all-todos');
+	const projectsTab = document.querySelector('#projects');
 
 	newTodoTab.addEventListener('click', _makeNewTodo);
 	allTodosTab.addEventListener('click', _listAllTodos);
+	projectsTab.addEventListener('click', _displayProjects);
 
 	function _makeNewTodo() {
 		const date = format(Date.now(), 'yyyy-MM-dd');
@@ -21,6 +23,10 @@ import TodoController from './scripts/todo-controller.js';
 	function _listAllTodos() {
 		const allTodosArray = todoController.getAllTodos();
 		dom.allTodosPage(allTodosArray);
+	}
+
+	function _displayProjects() {
+		dom.projectsPage();
 	}
 
 	function pushTodosListener(_msg, array) {
