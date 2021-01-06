@@ -1,6 +1,6 @@
 import Todo from './todo';
 
-class TodoController {
+export default class TodoController {
 	constructor() {}
 
 	static _allTodos = [];
@@ -14,7 +14,10 @@ class TodoController {
 		this._allTodos.push(newTodo);
 	}
 }
-// May need to convert this into an instance
 PubSub.subscribe('NEW_TODO', TodoController.pushNewTodo);
 
-export { TodoController };
+// TodoController is undefined when trying to add a new Todo
+// but NOT when getting all todos from the index
+// It must be a problem with the method pubsub is calling above
+// Por que?
+// At least it's progress
