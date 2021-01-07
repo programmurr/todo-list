@@ -3,7 +3,6 @@ import './styles/style.css';
 import DOM from './scripts/dom.js';
 import PubSub from 'pubsub-js';
 import TodoController from './scripts/todo-controller.js';
-import { remove } from 'lodash';
 
 (function() {
 	const dom = DOM();
@@ -21,7 +20,7 @@ import { remove } from 'lodash';
 		dom.newTodoForm(date);
 	}
 
-	function _listAllTodos() {
+	function _listAllTodos(_msg, _data) {
 		const allTodosArray = todoController.getAllTodos();
 		dom.allTodosPage(allTodosArray);
 	}
@@ -30,14 +29,16 @@ import { remove } from 'lodash';
 		dom.projectsPage();
 	}
 
-	function pushTodosListener(_msg, array) {
+	function _pushTodosListener(_msg, array) {
 		todoController.pushNewTodo(array);
+		alert('New Todo added!');
 	}
 
-	function removeTodo(_msg, index) {
+	function _removeTodoListener(_msg, index) {
 		todoController.removeTodo(index);
 	}
 
-	PubSub.subscribe('NEW_TODO', pushTodosListener);
-	PubSub.subscribe('REMOVE_TODO', removeTodo);
+	PubSub.subscribe('NEW_TODO', _pushTodosListener);
+	PubSub.subscribe('REMOVE_TODO', _removeTodoListener);
+	PubSub.subscribe('REFRESH_DISPLAY', _listAllTodos);
 })();

@@ -112,16 +112,35 @@ const DOM = () => {
 
 		function _submitForm() {
 			const inputs = document.querySelectorAll('input');
-			let todoValues = [];
+			if (_inputsCheck(inputs)) {
+				alert('Please complete all elements of the form!');
+			} else {
+				let todoValues = [];
 
-			inputs.forEach(function(input) {
-				if (input.type === 'text' || input.type === 'date') {
-					todoValues.push(input.value);
-				} else if (input.type === 'radio' && input.checked === true) {
-					todoValues.push(input.value);
+				inputs.forEach(function(input) {
+					if (input.type === 'text' || input.type === 'date') {
+						todoValues.push(input.value);
+					} else if (input.type === 'radio' && input.checked === true) {
+						todoValues.push(input.value);
+					}
+				});
+				PubSub.publish('NEW_TODO', todoValues);
+			}
+		}
+
+		function _inputsCheck(inputs) {
+			let counter = 0;
+			for (let i = 0; i < inputs.length; i++) {
+				if (inputs[i].type === 'text' && inputs[i].value === '') {
+					return true;
+				} else if (inputs[i].type === 'radio' && inputs[i].checked === false) {
+					counter++;
 				}
-			});
-			PubSub.publish('NEW_TODO', todoValues);
+				if (counter === 3) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		function _clearForm() {
@@ -176,11 +195,15 @@ const DOM = () => {
 				allTodosContainer.appendChild(todoItem);
 
 				removeButton.addEventListener('click', _removeTodo);
-				// Continue work on refreshing the subcontent when a Todo is removed
+				removeButton.addEventListener('click', _refreshDisplay);
 			}
 
 			function _removeTodo() {
 				PubSub.publish('REMOVE_TODO', this.id);
+			}
+
+			function _refreshDisplay() {
+				PubSub.publish('REFRESH_DISPLAY', 'blank');
 			}
 
 			subContent.appendChild(allTodosContainer);
