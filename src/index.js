@@ -1,11 +1,11 @@
 import { format } from 'date-fns';
 import './styles/style.css';
-import DOM from './scripts/dom.js';
+import subContentDOM from './scripts/dom.js';
 import PubSub from 'pubsub-js';
 import TodoController from './scripts/todo-controller.js';
 
 (function() {
-	const dom = DOM();
+	const subDom = subContentDOM();
 	const todoController = new TodoController();
 	const newTodoTab = document.querySelector('#new-todo');
 	const allTodosTab = document.querySelector('#all-todos');
@@ -17,16 +17,16 @@ import TodoController from './scripts/todo-controller.js';
 
 	function _makeNewTodo() {
 		const date = format(Date.now(), 'yyyy-MM-dd');
-		dom.newTodoForm(date);
+		subDom.newTodoForm(date);
 	}
 
 	function _listAllTodos(_msg, _data) {
 		const allTodosArray = todoController.getAllTodos();
-		dom.allTodosPage(allTodosArray);
+		subDom.allTodosPage(allTodosArray);
 	}
 
 	function _displayProjects() {
-		dom.projectsPage();
+		subDom.projectsPage();
 	}
 
 	function _pushTodosListener(_msg, array) {

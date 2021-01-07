@@ -1,4 +1,4 @@
-const DOM = () => {
+const subContentDOM = () => {
 	const subContent = document.querySelector('#sub-content');
 
 	function _clearPage() {
@@ -217,4 +217,4 @@ const DOM = () => {
 	return { newTodoForm, allTodosPage, projectsPage };
 };
 
-export default DOM;
+export default subContentDOM;
