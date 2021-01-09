@@ -7,7 +7,7 @@ export default class TodoController {
 			{
 				title: 'test',
 				description: 'test',
-				dueDate: '99-99-9999',
+				dueDate: '11-11-1111',
 				priority: '1'
 			},
 			{

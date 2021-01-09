@@ -3,10 +3,12 @@ import './styles/style.css';
 import subContentDOM from './scripts/dom.js';
 import PubSub from 'pubsub-js';
 import TodoController from './scripts/todo-controller.js';
+import ProjectController from './scripts/project-controller.js';
 
 (function() {
 	const subDom = subContentDOM();
 	const todoController = new TodoController();
+	const projectController = new ProjectController();
 	const newTodoTab = document.querySelector('#new-todo');
 	const allTodosTab = document.querySelector('#all-todos');
 	const projectsTab = document.querySelector('#projects');
@@ -17,7 +19,7 @@ import TodoController from './scripts/todo-controller.js';
 
 	function _makeNewTodo() {
 		const date = format(Date.now(), 'yyyy-MM-dd');
-		subDom.newTodoForm(date);
+		subDom.newTodoForm(date, projectController.getAllProjects());
 	}
 
 	function _listAllTodos(_msg, _data) {
@@ -26,7 +28,8 @@ import TodoController from './scripts/todo-controller.js';
 	}
 
 	function _displayProjects() {
-		subDom.projectsPage();
+		const allProjectsArray = projectController.getAllProjects();
+		subDom.projectsPage(allProjectsArray);
 	}
 
 	function _pushTodosListener(_msg, array) {
@@ -36,6 +39,7 @@ import TodoController from './scripts/todo-controller.js';
 
 	function _removeTodoListener(_msg, index) {
 		todoController.removeTodo(index);
+		projectController.removeTodoFromProject(index);
 	}
 
 	PubSub.subscribe('NEW_TODO', _pushTodosListener);

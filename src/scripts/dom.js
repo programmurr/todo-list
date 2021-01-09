@@ -5,7 +5,7 @@ const subContentDOM = () => {
 		subContent.innerHTML = '';
 	}
 
-	function newTodoForm(date) {
+	function newTodoForm(date, allProjectsArray) {
 		_clearPage();
 
 		const newTodoContainer = document.createElement('div');
@@ -159,59 +159,101 @@ const subContentDOM = () => {
 
 	function allTodosPage(allTodos) {
 		_clearPage();
+		const allTodosContainer = document.createElement('div');
+		allTodosContainer.className = 'all-todos';
+		allTodosContainer.id = 'all-todos-container';
 
 		if (allTodos.length > 0) {
-			const allTodosContainer = document.createElement('div');
-			allTodosContainer.className = 'all-todos';
-			allTodosContainer.id = 'all-todos-container';
-
 			for (let i = 0; i < allTodos.length; i++) {
-				const todoItem = document.createElement('ul');
-				todoItem.className = 'todo-item';
-				const title = document.createElement('li');
-				title.className = 'todo-item';
-				const description = document.createElement('li');
-				description.className = 'todo-item';
-				const dueDate = document.createElement('li');
-				dueDate.className = 'todo-item';
-				const priority = document.createElement('li');
-				priority.className = 'todo-item';
-				const removeButton = document.createElement('button');
-				removeButton.className = 'todo-item';
-				removeButton.textContent = 'Delete';
-				removeButton.id = parseInt(i);
-
-				title.textContent = allTodos[i].title;
-				description.textContent = allTodos[i].description;
-				dueDate.textContent = allTodos[i].dueDate;
-				priority.textContent = allTodos[i].priority;
-
-				todoItem.appendChild(title);
-				todoItem.appendChild(description);
-				todoItem.appendChild(dueDate);
-				todoItem.appendChild(priority);
-				todoItem.appendChild(removeButton);
-
-				allTodosContainer.appendChild(todoItem);
-
-				removeButton.addEventListener('click', _removeTodo);
-				removeButton.addEventListener('click', _refreshDisplay);
-			}
-
-			function _removeTodo() {
-				PubSub.publish('REMOVE_TODO', this.id);
-			}
-
-			function _refreshDisplay() {
-				PubSub.publish('REFRESH_DISPLAY', 'blank');
+				_displayTodo(allTodosContainer, allTodos[i], i);
 			}
 
 			subContent.appendChild(allTodosContainer);
+		} else {
+			_emptyDiv('todos');
 		}
 	}
 
-	function projectsPage() {
-		console.log('WHOOT');
+	function _removeTodo() {
+		PubSub.publish('REMOVE_TODO', this.id);
+	}
+
+	function _refreshDisplay() {
+		// This currently only works correctly for 'All Todos'
+		// In 'My Projects' it messes up
+		// However if a todo is removed from 'My Projects', it is also removed from All Todos
+		PubSub.publish('REFRESH_DISPLAY', 'blank');
+	}
+
+	function _displayTodo(container, todo, i) {
+		const todoItem = document.createElement('ul');
+		todoItem.className = 'todo-item';
+		const title = document.createElement('li');
+		title.className = 'todo-item';
+		const description = document.createElement('li');
+		description.className = 'todo-item';
+		const dueDate = document.createElement('li');
+		dueDate.className = 'todo-item';
+		const priority = document.createElement('li');
+		priority.className = 'todo-item';
+		const removeButton = document.createElement('button');
+		removeButton.className = 'todo-item';
+		removeButton.textContent = 'Delete';
+		removeButton.id = parseInt(i);
+
+		removeButton.addEventListener('click', _removeTodo);
+		removeButton.addEventListener('click', _refreshDisplay);
+
+		title.textContent = todo.title;
+		description.textContent = todo.description;
+		dueDate.textContent = todo.dueDate;
+		priority.textContent = todo.priority;
+
+		todoItem.appendChild(title);
+		todoItem.appendChild(description);
+		todoItem.appendChild(dueDate);
+		todoItem.appendChild(priority);
+		todoItem.appendChild(removeButton);
+
+		container.appendChild(todoItem);
+	}
+
+	function projectsPage(allProjectsArray) {
+		_clearPage();
+		const allProjectsContainer = document.createElement('div');
+		allProjectsContainer.className = 'all-projects';
+		allProjectsContainer.id = 'all-projects-container';
+
+		if (allProjectsArray.length > 0) {
+			for (let i = 0; i < allProjectsArray.length; i++) {
+				const projectDiv = document.createElement('div');
+				projectDiv.className = 'all-projects';
+				projectDiv.id = `project${i}`;
+
+				const projectTitle = document.createElement('h3');
+				projectTitle.className = 'all-projects';
+				projectTitle.id = `project-title${i}`;
+				projectTitle.textContent = allProjectsArray[i].title;
+
+				projectDiv.appendChild(projectTitle);
+
+				allProjectsArray[i].todos.forEach(function(todo) {
+					_displayTodo(projectDiv, todo, i);
+				});
+
+				allProjectsContainer.appendChild(projectDiv);
+			}
+		} else {
+			_emptyDiv('projects');
+		}
+		subContent.appendChild(allProjectsContainer);
+	}
+
+	function _emptyDiv(items) {
+		const empty = document.createElement('p');
+		empty.id = 'div-empty';
+		empty.textContent = `No ${items} here!`;
+		subContent.appendChild(empty);
 	}
 
 	return { newTodoForm, allTodosPage, projectsPage };
