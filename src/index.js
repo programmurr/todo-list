@@ -8,14 +8,20 @@ import ProjectController from './scripts/project-controller.js';
 	const subDom = subContentDOM();
 	const projectController = new ProjectController();
 	const newTodoTab = document.querySelector('#new-todo');
+	const newProjectTab = document.querySelector('#new-project');
 	const projectsTab = document.querySelector('#projects');
+	const date = format(Date.now(), 'yyyy-MM-dd');
 
 	newTodoTab.addEventListener('click', _makeNewTodo);
 	projectsTab.addEventListener('click', _displayProjects);
+	newProjectTab.addEventListener('click', _makeNewProject);
 
 	function _makeNewTodo() {
-		const date = format(Date.now(), 'yyyy-MM-dd');
 		subDom.newTodoForm(date, projectController.getAllProjects());
+	}
+
+	function _makeNewProject() {
+		subDom.newProjectForm(date);
 	}
 
 	function _displayProjects() {

@@ -141,8 +141,11 @@ const subContentDOM = () => {
 			const inputs = document.querySelectorAll('input');
 			const select = document.querySelector('select');
 
+			// Input info currently gets lost after the alert is raised
 			if (_inputsCheck(inputs)) {
 				alert('Please complete all elements of the form!');
+			} else if (select.value === '') {
+				alert('Please choose a project!');
 			} else {
 				let todoValues = [];
 
@@ -187,14 +190,66 @@ const subContentDOM = () => {
 		}
 	}
 
+	function newProjectForm(date) {
+		_clearPage();
+
+		const newProjectContainer = document.createElement('div');
+		newProjectContainer.className = 'new-project-form';
+		newProjectContainer.div = 'new-project-div';
+
+		const titleInput = document.createElement('input');
+		titleInput.type = 'text';
+		titleInput.className = 'new-project-div';
+		titleInput.id = 'project-title';
+		titleInput.name = 'project-title';
+		const titleLabel = document.createElement('label');
+		titleLabel.for = 'project-title';
+		titleLabel.className = 'new-project-div';
+		titleLabel.textContent = 'Project Title';
+
+		const dueDate = document.createElement('input');
+		dueDate.type = 'date';
+		dueDate.name = 'project-due-date';
+		dueDate.id = 'project-due-date';
+		dueDate.className = 'new-project-div';
+		dueDate.value = date;
+		dueDate.min = date;
+		const dueDateLabel = document.createElement('label');
+		dueDateLabel.for = 'project-due-date';
+		dueDateLabel.className = 'new-project-div';
+		dueDateLabel.textContent = 'Due Date';
+
+		const submitButton = document.createElement('button');
+		submitButton.id = 'project-submit-button';
+		submitButton.className = 'new-project-div';
+		submitButton.textContent = 'Create';
+
+		const cancelButton = document.createElement('button');
+		cancelButton.className = 'new-project-div';
+		cancelButton.id = 'cancel-project';
+		cancelButton.textContent = 'Cancel';
+
+		titleLabel.appendChild(titleInput);
+		dueDateLabel.appendChild(dueDate);
+
+		newProjectContainer.appendChild(titleLabel);
+		newProjectContainer.appendChild(dueDateLabel);
+		newProjectContainer.appendChild(submitButton);
+		newProjectContainer.appendChild(cancelButton);
+
+		subContent.appendChild(newProjectContainer);
+
+		// Make form input logic
+		// Will need to dry up code after - too many similarities with New Todo form
+	}
+
 	function _removeTodo() {
+		// TODO: This isn't working
 		PubSub.publish('REMOVE_TODO', this.id);
 	}
 
 	function _refreshDisplay() {
-		// This currently only works correctly for 'All Todos'
-		// In 'My Projects' it messes up
-		// However if a todo is removed from 'My Projects', it is also removed from All Todos
+		// TODO: This isn't working
 		PubSub.publish('REFRESH_DISPLAY', 'blank');
 	}
 
@@ -209,13 +264,13 @@ const subContentDOM = () => {
 		dueDate.className = 'todo-item';
 		const priority = document.createElement('li');
 		priority.className = 'todo-item';
-		const removeButton = document.createElement('button');
-		removeButton.className = 'todo-item';
-		removeButton.textContent = 'Delete';
-		removeButton.id = parseInt(i);
+		const completeButton = document.createElement('button');
+		completeButton.className = 'todo-item';
+		completeButton.textContent = 'Complete';
+		completeButton.id = parseInt(i);
 
-		removeButton.addEventListener('click', _removeTodo);
-		removeButton.addEventListener('click', _refreshDisplay);
+		completeButton.addEventListener('click', _removeTodo);
+		completeButton.addEventListener('click', _refreshDisplay);
 
 		title.textContent = todo.title;
 		description.textContent = todo.description;
@@ -226,13 +281,14 @@ const subContentDOM = () => {
 		todoItem.appendChild(description);
 		todoItem.appendChild(dueDate);
 		todoItem.appendChild(priority);
-		todoItem.appendChild(removeButton);
+		todoItem.appendChild(completeButton);
 
 		container.appendChild(todoItem);
 	}
 
 	function projectsPage(allProjectsArray) {
 		_clearPage();
+
 		const allProjectsContainer = document.createElement('div');
 		allProjectsContainer.className = 'all-projects';
 		allProjectsContainer.id = 'all-projects-container';
@@ -269,7 +325,7 @@ const subContentDOM = () => {
 		subContent.appendChild(empty);
 	}
 
-	return { newTodoForm, projectsPage };
+	return { newTodoForm, newProjectForm, projectsPage };
 };
 
 export default subContentDOM;

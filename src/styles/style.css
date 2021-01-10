@@ -23,12 +23,15 @@ body {
 	margin-right: 5px;
 }
 
-#all-todos {
-	margin-left: 5px;
+#new-project {
 	margin-right: 5px;
 }
 
 #new-todo-container {
+	display: grid;
+}
+
+.new-project-form {
 	display: grid;
 }
 
