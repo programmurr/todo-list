@@ -112,7 +112,7 @@ const subContentDOM = () => {
 		cancelButton.id = 'cancel-new';
 		cancelButton.textContent = 'Cancel';
 
-		// Add to newTodoCOntainer div
+		// Add to newTodoContainer div
 		titleLabel.appendChild(titleInput);
 		descriptionLabel.appendChild(descriptionInput);
 		dueDateLabel.appendChild(dueDate);
@@ -186,23 +186,6 @@ const subContentDOM = () => {
 			});
 		}
 	}
-
-	// function allTodosPage(allTodos) {
-	// 	_clearPage();
-	// 	const allTodosContainer = document.createElement('div');
-	// 	allTodosContainer.className = 'all-todos';
-	// 	allTodosContainer.id = 'all-todos-container';
-
-	// 	if (allTodos.length > 0) {
-	// 		for (let i = 0; i < allTodos.length; i++) {
-	// 			_displayTodo(allTodosContainer, allTodos[i], i);
-	// 		}
-
-	// 		subContent.appendChild(allTodosContainer);
-	// 	} else {
-	// 		_emptyDiv('todos');
-	// 	}
-	// }
 
 	function _removeTodo() {
 		PubSub.publish('REMOVE_TODO', this.id);
@@ -286,7 +269,6 @@ const subContentDOM = () => {
 		subContent.appendChild(empty);
 	}
 
-	// allTodosPage
 	return { newTodoForm, projectsPage };
 };
 
