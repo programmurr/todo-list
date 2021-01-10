@@ -4,7 +4,8 @@ import Todo from './todo';
 
 export default class ProjectController {
 	constructor() {
-		// Do NOT remove First Project when live
+		// Do NOT remove First Project when live, but remove the Todos
+		// Also, I think dueDate will be added here soon
 		this.allProjects = [
 			new Project('My First Project', [
 				new Todo('test', 'test', '11-11-1111', '1'),
@@ -39,5 +40,3 @@ export default class ProjectController {
 		});
 	}
 }
-
-// TODO: There are too many dependencies here. It works for now but it's not DRY

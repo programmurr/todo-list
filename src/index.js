@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import PubSub from 'pubsub-js';
 import './styles/style.css';
 import subContentDOM from './scripts/dom.js';
+// Make a seperate DOM Controller for nav bar?
 import ProjectController from './scripts/project-controller.js';
 
 (function() {
