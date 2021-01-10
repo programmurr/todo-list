@@ -1,11 +1,11 @@
-const subContentDOM = () => {
+const subContentDOM = (date) => {
 	const subContent = document.querySelector('#sub-content');
 
 	function _clearPage() {
 		subContent.innerHTML = '';
 	}
 
-	function newTodoForm(date, allProjectsArray) {
+	function newTodoForm(allProjectsArray) {
 		_clearPage();
 
 		const newTodoContainer = document.createElement('div');
@@ -102,10 +102,10 @@ const subContentDOM = () => {
 		selectProjectLabel.appendChild(selectProject);
 
 		// Buttons
-		const submitButton = document.createElement('button');
-		submitButton.id = 'new-submit-button';
-		submitButton.className = 'new-input';
-		submitButton.textContent = 'Create';
+		const createButton = document.createElement('button');
+		createButton.id = 'new-create-button';
+		createButton.className = 'new-input';
+		createButton.textContent = 'Create';
 
 		const cancelButton = document.createElement('button');
 		cancelButton.className = 'new-input';
@@ -127,17 +127,17 @@ const subContentDOM = () => {
 		newTodoContainer.appendChild(priority2Label);
 		newTodoContainer.appendChild(priority3Label);
 		newTodoContainer.appendChild(selectProjectLabel);
-		newTodoContainer.appendChild(submitButton);
+		newTodoContainer.appendChild(createButton);
 		newTodoContainer.appendChild(cancelButton);
 
 		subContent.appendChild(newTodoContainer);
 
-		submitButton.addEventListener('click', _submitForm);
-		submitButton.addEventListener('click', _clearForm);
+		createButton.addEventListener('click', _submitTodoForm);
+		createButton.addEventListener('click', _clearForm);
 
 		cancelButton.addEventListener('click', _clearPage);
 
-		function _submitForm() {
+		function _submitTodoForm() {
 			const inputs = document.querySelectorAll('input');
 			const select = document.querySelector('select');
 
@@ -147,17 +147,17 @@ const subContentDOM = () => {
 			} else if (select.value === '') {
 				alert('Please choose a project!');
 			} else {
-				let todoValues = [];
+				let formValues = [];
 
 				inputs.forEach(function(input) {
 					if (input.type === 'text' || input.type === 'date') {
-						todoValues.push(input.value);
+						formValues.push(input.value);
 					} else if (input.type === 'radio' && input.checked === true) {
-						todoValues.push(input.value);
+						formValues.push(input.value);
 					}
 				});
-				todoValues.push(select.value);
-				PubSub.publish('NEW_TODO', todoValues);
+				formValues.push(select.value);
+				PubSub.publish('NEW_TODO', formValues);
 			}
 		}
 
@@ -190,6 +190,61 @@ const subContentDOM = () => {
 		}
 	}
 
+	function _inputsGeneralCheck(inputs) {
+		let counter = 0;
+		for (let i = 0; i < inputs.length; i++) {
+			if (inputs[i].type === 'text' && inputs[i].value === '') {
+				return true;
+			} else if (inputs[i].type === 'radio' && inputs[i].checked === false) {
+				counter++;
+			}
+			if (counter === 3) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function _clearGeneralForm() {
+		console.log(this);
+		const inputs = document.querySelectorAll('input');
+		inputs.forEach(function(input) {
+			if (input.type === 'text') {
+				input.value = '';
+			} else if (input.type === 'radio') {
+				input.checked = false;
+			} else if (input.type === 'date') {
+				input.value = date;
+			}
+		});
+	}
+
+	function _submitGeneralForm() {
+		const inputs = document.querySelectorAll('input');
+		const select = document.querySelector('select');
+
+		// Input info currently gets lost after the alert is raised
+		if (_inputsGeneralCheck(inputs)) {
+			alert('Please complete all elements of the form!');
+		} else if (select && select.value === '') {
+			alert('Please choose a project!');
+		} else {
+			let formValues = [];
+
+			inputs.forEach(function(input) {
+				if (input.type === 'text' || input.type === 'date') {
+					formValues.push(input.value);
+				} else if (input.type === 'radio' && input.checked === true) {
+					formValues.push(input.value);
+				}
+			});
+			if (select) {
+				formValues.push(select.value);
+			}
+			PubSub.publish('NEW_PROJECT', formValues);
+		}
+	}
+
 	function newProjectForm(date) {
 		_clearPage();
 
@@ -219,37 +274,38 @@ const subContentDOM = () => {
 		dueDateLabel.className = 'new-project-div';
 		dueDateLabel.textContent = 'Due Date';
 
-		const submitButton = document.createElement('button');
-		submitButton.id = 'project-submit-button';
-		submitButton.className = 'new-project-div';
-		submitButton.textContent = 'Create';
+		const createButton = document.createElement('button');
+		createButton.id = 'project-create-button';
+		createButton.className = 'new-project-div';
+		createButton.textContent = 'Create';
 
 		const cancelButton = document.createElement('button');
 		cancelButton.className = 'new-project-div';
 		cancelButton.id = 'cancel-project';
 		cancelButton.textContent = 'Cancel';
 
+		createButton.addEventListener('click', _submitGeneralForm);
+		createButton.addEventListener('click', _clearGeneralForm);
+		cancelButton.addEventListener('click', _clearPage);
+
 		titleLabel.appendChild(titleInput);
 		dueDateLabel.appendChild(dueDate);
 
 		newProjectContainer.appendChild(titleLabel);
 		newProjectContainer.appendChild(dueDateLabel);
-		newProjectContainer.appendChild(submitButton);
+		newProjectContainer.appendChild(createButton);
 		newProjectContainer.appendChild(cancelButton);
 
 		subContent.appendChild(newProjectContainer);
-
-		// Make form input logic
-		// Will need to dry up code after - too many similarities with New Todo form
 	}
 
 	function _removeTodo() {
-		// TODO: This isn't working
+		// TODO: This isn't working - get Project logic fully set up first
 		PubSub.publish('REMOVE_TODO', this.id);
 	}
 
 	function _refreshDisplay() {
-		// TODO: This isn't working
+		// TODO: This isn't working - get Project logic fully set up first
 		PubSub.publish('REFRESH_DISPLAY', 'blank');
 	}
 
