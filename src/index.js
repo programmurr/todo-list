@@ -34,6 +34,7 @@ import ProjectController from './scripts/project-controller.js';
 
 	function _pushTodosListener(_msg, array) {
 		todoController.pushNewTodo(array);
+		projectController.pushNewTodo(array);
 		alert('New Todo added!');
 	}
 

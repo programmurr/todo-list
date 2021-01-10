@@ -2,21 +2,8 @@ import Todo from './todo';
 
 export default class TodoController {
 	constructor() {
-		// remove objects when live
-		this.allTodos = [
-			{
-				title: 'test',
-				description: 'test',
-				dueDate: '11-11-1111',
-				priority: '1'
-			},
-			{
-				title: 'test2',
-				description: 'test2',
-				dueDate: '22-22-2222',
-				priority: '2'
-			}
-		];
+		// remove Todos when live
+		this.allTodos = [ new Todo('test', 'test', '11-11-1111', '1'), new Todo('test2', 'test2', '22-22-2222', '2') ];
 	}
 
 	getAllTodos() {

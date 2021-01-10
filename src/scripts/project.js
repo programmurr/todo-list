@@ -1,7 +1,7 @@
 export default class Project {
-	constructor(title) {
+	constructor(title, todos = []) {
 		this.title = title;
-		this.todos = [];
+		this.todos = todos;
 	}
 
 	getTodos() {

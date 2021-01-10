@@ -7,14 +7,12 @@ const subContentDOM = () => {
 
 	function newTodoForm(date, allProjectsArray) {
 		_clearPage();
-		console.log(allProjectsArray);
 
 		const newTodoContainer = document.createElement('div');
 		newTodoContainer.className = 'new-input';
 		newTodoContainer.id = 'new-todo-container';
 
 		// Form inputs
-
 		const titleInput = document.createElement('input');
 		titleInput.type = 'text';
 		titleInput.className = 'new-input';
@@ -88,7 +86,7 @@ const subContentDOM = () => {
 		selectProjectLabel.className = 'new-input';
 		selectProjectLabel.id = 'select-project-label';
 		selectProjectLabel.for = 'project-select';
-		selectProjectLabel.textContent = 'Choose a project to add this to:';
+		selectProjectLabel.textContent = 'Add this to:';
 
 		const defaultOption = document.createElement('option');
 		defaultOption.value = '';
@@ -114,6 +112,7 @@ const subContentDOM = () => {
 		cancelButton.id = 'cancel-new';
 		cancelButton.textContent = 'Cancel';
 
+		// Add to newTodoCOntainer div
 		titleLabel.appendChild(titleInput);
 		descriptionLabel.appendChild(descriptionInput);
 		dueDateLabel.appendChild(dueDate);
@@ -140,6 +139,8 @@ const subContentDOM = () => {
 
 		function _submitForm() {
 			const inputs = document.querySelectorAll('input');
+			const select = document.querySelector('select');
+
 			if (_inputsCheck(inputs)) {
 				alert('Please complete all elements of the form!');
 			} else {
@@ -152,6 +153,7 @@ const subContentDOM = () => {
 						todoValues.push(input.value);
 					}
 				});
+				todoValues.push(select.value);
 				PubSub.publish('NEW_TODO', todoValues);
 			}
 		}
