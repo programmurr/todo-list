@@ -39,3 +39,5 @@ export default class ProjectController {
 		});
 	}
 }
+
+// TODO: There are too many dependencies here. It works for now but it's not DRY
