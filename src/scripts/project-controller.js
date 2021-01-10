@@ -20,17 +20,6 @@ export default class ProjectController {
 						priority: '2'
 					}
 				]
-			},
-			{
-				title: 'My Second Project',
-				todos: [
-					{
-						title: 'test3',
-						description: 'test3',
-						dueDate: '33-33-3333',
-						priority: '3'
-					}
-				]
 			}
 		];
 	}

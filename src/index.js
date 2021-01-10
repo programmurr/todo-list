@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
+import PubSub from 'pubsub-js';
 import './styles/style.css';
 import subContentDOM from './scripts/dom.js';
-import PubSub from 'pubsub-js';
 import TodoController from './scripts/todo-controller.js';
 import ProjectController from './scripts/project-controller.js';
 

@@ -7,10 +7,13 @@ const subContentDOM = () => {
 
 	function newTodoForm(date, allProjectsArray) {
 		_clearPage();
+		console.log(allProjectsArray);
 
 		const newTodoContainer = document.createElement('div');
 		newTodoContainer.className = 'new-input';
 		newTodoContainer.id = 'new-todo-container';
+
+		// Form inputs
 
 		const titleInput = document.createElement('input');
 		titleInput.type = 'text';
@@ -77,6 +80,30 @@ const subContentDOM = () => {
 		priority3Label.for = 'priority3';
 		priority3Label.textContent = 'Priority 3';
 
+		// Project selection
+		const selectProject = document.createElement('select');
+		selectProject.name = 'projects';
+		selectProject.id = 'project-select';
+		const selectProjectLabel = document.createElement('label');
+		selectProjectLabel.className = 'new-input';
+		selectProjectLabel.id = 'select-project-label';
+		selectProjectLabel.for = 'project-select';
+		selectProjectLabel.textContent = 'Choose a project to add this to:';
+
+		const defaultOption = document.createElement('option');
+		defaultOption.value = '';
+		defaultOption.textContent = '-- Choose Project --';
+
+		const firstProject = document.createElement('option');
+		firstProject.value = `${allProjectsArray[0].title}`;
+		firstProject.textContent = `${allProjectsArray[0].title}`;
+
+		selectProject.appendChild(defaultOption);
+		selectProject.appendChild(firstProject);
+
+		selectProjectLabel.appendChild(selectProject);
+
+		// Buttons
 		const submitButton = document.createElement('button');
 		submitButton.id = 'new-submit-button';
 		submitButton.className = 'new-input';
@@ -100,6 +127,7 @@ const subContentDOM = () => {
 		newTodoContainer.appendChild(priority1Label);
 		newTodoContainer.appendChild(priority2Label);
 		newTodoContainer.appendChild(priority3Label);
+		newTodoContainer.appendChild(selectProjectLabel);
 		newTodoContainer.appendChild(submitButton);
 		newTodoContainer.appendChild(cancelButton);
 
