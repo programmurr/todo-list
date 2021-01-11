@@ -217,18 +217,6 @@ const subContentDOM = (date) => {
 		titleLabel.className = 'new-project-div';
 		titleLabel.textContent = 'Project Title';
 
-		const dueDate = document.createElement('input');
-		dueDate.type = 'date';
-		dueDate.name = 'project-due-date';
-		dueDate.id = 'project-due-date';
-		dueDate.className = 'new-project-div';
-		dueDate.value = date;
-		dueDate.min = date;
-		const dueDateLabel = document.createElement('label');
-		dueDateLabel.for = 'project-due-date';
-		dueDateLabel.className = 'new-project-div';
-		dueDateLabel.textContent = 'Due Date';
-
 		const createButton = document.createElement('button');
 		createButton.id = 'project-create-button';
 		createButton.className = 'new-project-div';
@@ -244,10 +232,8 @@ const subContentDOM = (date) => {
 		cancelButton.addEventListener('click', _clearPage);
 
 		titleLabel.appendChild(titleInput);
-		dueDateLabel.appendChild(dueDate);
 
 		newProjectContainer.appendChild(titleLabel);
-		newProjectContainer.appendChild(dueDateLabel);
 		newProjectContainer.appendChild(createButton);
 		newProjectContainer.appendChild(cancelButton);
 
@@ -264,6 +250,7 @@ const subContentDOM = (date) => {
 		PubSub.publish('REFRESH_DISPLAY', 'blank');
 	}
 
+	// Change 'complete' button to a tick?
 	function _displayTodo(container, todo, i) {
 		const todoItem = document.createElement('ul');
 		todoItem.className = 'todo-item';
@@ -315,15 +302,8 @@ const subContentDOM = (date) => {
 				projectTitle.id = `project-title${i}`;
 				projectTitle.textContent = allProjectsArray[i].title;
 
-				const projectDate = document.createElement('p');
-				projectDate.className = 'all-projects';
-				projectDate.id = `project-date${i}`;
-				projectDate.textContent = allProjectsArray[i].dueDate;
-
 				projectDiv.appendChild(projectTitle);
-				projectDiv.appendChild(projectDate);
 
-				console.log(allProjectsArray);
 				allProjectsArray[i].todos.forEach(function(todo) {
 					_displayTodo(projectDiv, todo, i);
 				});
