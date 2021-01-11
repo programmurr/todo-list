@@ -30,15 +30,14 @@ import ProjectController from './scripts/project-controller.js';
 		subDom.projectsPage(allProjectsArray);
 	}
 
-	function _pushTodosListener(_msg, array) {
-		projectController.pushNewTodo(array);
+	function _pushTodosListener(_msg, todoArray) {
+		projectController.pushNewTodo(todoArray);
 		alert('New Todo added!');
 	}
 
-	function _pushProjectsListener(_msg, array) {
-		console.log(array);
-		// Need to fundamentally rethink Project data fields - now a project needs to be made with due date
-		// Which was an unanticipated requirement
+	function _pushProjectsListener(_msg, projectArray) {
+		projectController.addNewProject(projectArray);
+		alert('New Project added!');
 	}
 
 	// Not functional

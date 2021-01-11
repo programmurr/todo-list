@@ -92,13 +92,15 @@ const subContentDOM = (date) => {
 		defaultOption.value = '';
 		defaultOption.textContent = '-- Choose Project --';
 
-		const firstProject = document.createElement('option');
-		firstProject.value = `${allProjectsArray[0].title}`;
-		firstProject.textContent = `${allProjectsArray[0].title}`;
-
 		selectProject.appendChild(defaultOption);
-		selectProject.appendChild(firstProject);
 
+		// Append projects to select box
+		allProjectsArray.forEach(function(project) {
+			const projectOption = document.createElement('option');
+			projectOption.value = project.title;
+			projectOption.textContent = project.title;
+			selectProject.appendChild(projectOption);
+		});
 		selectProjectLabel.appendChild(selectProject);
 
 		// Buttons
@@ -176,6 +178,7 @@ const subContentDOM = (date) => {
 		} else if (select && select.value === '') {
 			alert('Please choose a project!');
 		} else {
+			// wrap below into a separate method?
 			let formValues = [];
 
 			inputs.forEach(function(input) {
@@ -312,8 +315,15 @@ const subContentDOM = (date) => {
 				projectTitle.id = `project-title${i}`;
 				projectTitle.textContent = allProjectsArray[i].title;
 
-				projectDiv.appendChild(projectTitle);
+				const projectDate = document.createElement('p');
+				projectDate.className = 'all-projects';
+				projectDate.id = `project-date${i}`;
+				projectDate.textContent = allProjectsArray[i].dueDate;
 
+				projectDiv.appendChild(projectTitle);
+				projectDiv.appendChild(projectDate);
+
+				console.log(allProjectsArray);
 				allProjectsArray[i].todos.forEach(function(todo) {
 					_displayTodo(projectDiv, todo, i);
 				});
