@@ -2,8 +2,9 @@ import { format } from 'date-fns';
 import PubSub from 'pubsub-js';
 import './styles/style.css';
 import subContentDOM from './scripts/dom.js';
-// Make a seperate DOM Controller for nav bar?
 import ProjectController from './scripts/project-controller.js';
+import HTMLTodoParser from './scripts/html-todo-parser.js';
+// Make a seperate DOM Controller for nav bar?
 
 (function() {
 	const date = format(Date.now(), 'yyyy-MM-dd');
@@ -40,9 +41,9 @@ import ProjectController from './scripts/project-controller.js';
 		alert('New Project added!');
 	}
 
-	// Not functional
-	function _removeTodoListener(_msg, index) {
-		projectController.removeTodoFromProject(index);
+	function _removeTodoListener(_msg, domArray) {
+		const todo = HTMLTodoParser.htmlConvertTodo(domArray[0]);
+		projectController.removeTodoFromProject(todo, domArray[1]);
 	}
 
 	PubSub.subscribe('NEW_TODO', _pushTodosListener);

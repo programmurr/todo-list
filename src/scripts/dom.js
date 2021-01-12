@@ -140,67 +140,7 @@ const subContentDOM = (date) => {
 		cancelButton.addEventListener('click', _clearPage);
 	}
 
-	function _inputsCheck(inputs) {
-		let counter = 0;
-		for (let i = 0; i < inputs.length; i++) {
-			if (inputs[i].type === 'text' && inputs[i].value === '') {
-				return true;
-			} else if (inputs[i].type === 'radio' && inputs[i].checked === false) {
-				counter++;
-			}
-			if (counter === 3) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	function _clearForm() {
-		const inputs = document.querySelectorAll('input');
-		inputs.forEach(function(input) {
-			if (input.type === 'text') {
-				input.value = '';
-			} else if (input.type === 'radio') {
-				input.checked = false;
-			} else if (input.type === 'date') {
-				input.value = date;
-			}
-		});
-	}
-
-	function _submitForm() {
-		const inputs = document.querySelectorAll('input');
-		const select = document.querySelector('select');
-
-		// Input info currently gets lost after the alert is raised
-		if (_inputsCheck(inputs)) {
-			alert('Please complete all elements of the form!');
-		} else if (select && select.value === '') {
-			alert('Please choose a project!');
-		} else {
-			// wrap below into a separate method?
-			let formValues = [];
-
-			inputs.forEach(function(input) {
-				if (input.type === 'text' || input.type === 'date') {
-					formValues.push(input.value);
-				} else if (input.type === 'radio' && input.checked === true) {
-					formValues.push(input.value);
-				}
-			});
-			if (select) {
-				formValues.push(select.value);
-			}
-
-			if (this.id === 'new-todo-button') {
-				return PubSub.publish('NEW_TODO', formValues);
-			} else {
-				return PubSub.publish('NEW_PROJECT', formValues);
-			}
-		}
-	}
-
-	function newProjectForm(date) {
+	function newProjectForm() {
 		_clearPage();
 
 		const newProjectContainer = document.createElement('div');
@@ -240,50 +180,6 @@ const subContentDOM = (date) => {
 		subContent.appendChild(newProjectContainer);
 	}
 
-	function _removeTodo() {
-		// TODO: This isn't working - get Project logic fully set up first
-		PubSub.publish('REMOVE_TODO', this.id);
-	}
-
-	function _refreshDisplay() {
-		// TODO: This isn't working - get Project logic fully set up first
-		PubSub.publish('REFRESH_DISPLAY', 'blank');
-	}
-
-	// Change 'complete' button to a tick?
-	function _displayTodo(container, todo, i) {
-		const todoItem = document.createElement('ul');
-		todoItem.className = 'todo-item';
-		const title = document.createElement('li');
-		title.className = 'todo-item';
-		const description = document.createElement('li');
-		description.className = 'todo-item';
-		const dueDate = document.createElement('li');
-		dueDate.className = 'todo-item';
-		const priority = document.createElement('li');
-		priority.className = 'todo-item';
-		const completeButton = document.createElement('button');
-		completeButton.className = 'todo-item';
-		completeButton.textContent = 'Complete';
-		completeButton.id = parseInt(i);
-
-		completeButton.addEventListener('click', _removeTodo);
-		completeButton.addEventListener('click', _refreshDisplay);
-
-		title.textContent = todo.title;
-		description.textContent = todo.description;
-		dueDate.textContent = todo.dueDate;
-		priority.textContent = todo.priority;
-
-		todoItem.appendChild(title);
-		todoItem.appendChild(description);
-		todoItem.appendChild(dueDate);
-		todoItem.appendChild(priority);
-		todoItem.appendChild(completeButton);
-
-		container.appendChild(todoItem);
-	}
-
 	function projectsPage(allProjectsArray) {
 		_clearPage();
 
@@ -314,6 +210,110 @@ const subContentDOM = (date) => {
 			_emptyDiv('projects');
 		}
 		subContent.appendChild(allProjectsContainer);
+	}
+	// Change 'complete' button to a tick?
+	function _displayTodo(container, todo, i) {
+		const todoItem = document.createElement('ul');
+		todoItem.className = 'todo-item';
+		todoItem.id = parseInt(i);
+		const title = document.createElement('li');
+		title.className = 'todo-item';
+		const description = document.createElement('li');
+		description.className = 'todo-item';
+		const dueDate = document.createElement('li');
+		dueDate.className = 'todo-item';
+		const priority = document.createElement('li');
+		priority.className = 'todo-item';
+		const completeButton = document.createElement('button');
+		completeButton.className = 'todo-item';
+		completeButton.textContent = 'Complete';
+
+		completeButton.addEventListener('click', _removeTodo);
+		// completeButton.addEventListener('click', _refreshDisplay);
+
+		title.textContent = todo.title;
+		description.textContent = todo.description;
+		dueDate.textContent = todo.dueDate;
+		priority.textContent = todo.priority;
+
+		todoItem.appendChild(title);
+		todoItem.appendChild(description);
+		todoItem.appendChild(dueDate);
+		todoItem.appendChild(priority);
+		todoItem.appendChild(completeButton);
+
+		container.appendChild(todoItem);
+	}
+
+	function _inputsCheck(inputs) {
+		let counter = 0;
+		for (let i = 0; i < inputs.length; i++) {
+			if (inputs[i].type === 'text' && inputs[i].value === '') {
+				return true;
+			} else if (inputs[i].type === 'radio' && inputs[i].checked === false) {
+				counter++;
+			}
+			if (counter === 3) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function _clearForm() {
+		const inputs = document.querySelectorAll('input');
+		inputs.forEach(function(input) {
+			if (input.type === 'text') {
+				input.value = '';
+			} else if (input.type === 'radio') {
+				input.checked = false;
+			} else if (input.type === 'date') {
+				input.value = date;
+			}
+		});
+	}
+
+	// Need to run a check to ensure title does not match another title
+	function _submitForm() {
+		const inputs = document.querySelectorAll('input');
+		const select = document.querySelector('select');
+
+		// Input info currently gets lost after the alert is raised
+		if (_inputsCheck(inputs)) {
+			alert('Please complete all elements of the form!');
+		} else if (select && select.value === '') {
+			alert('Please choose a project!');
+		} else {
+			// wrap below into a separate method?
+			let formValues = [];
+
+			inputs.forEach(function(input) {
+				if (input.type === 'text' || input.type === 'date') {
+					formValues.push(input.value);
+				} else if (input.type === 'radio' && input.checked === true) {
+					formValues.push(input.value);
+				}
+			});
+			if (select) {
+				formValues.push(select.value);
+			}
+
+			if (this.id === 'new-todo-button') {
+				return PubSub.publish('NEW_TODO', formValues);
+			} else {
+				return PubSub.publish('NEW_PROJECT', formValues);
+			}
+		}
+	}
+
+	function _removeTodo() {
+		const projectTitle = this.parentElement.parentElement.querySelector('h3');
+		PubSub.publish('REMOVE_TODO', [ this.parentElement, projectTitle.textContent ]);
+	}
+
+	function _refreshDisplay() {
+		// TODO: Project lgoic compelte - now work on this
+		PubSub.publish('REFRESH_DISPLAY', 'blank');
 	}
 
 	function _emptyDiv(items) {

@@ -26,16 +26,23 @@ export default class ProjectController {
 		return this.allProjects.splice(index, 1);
 	}
 
-	// Not working yet
-	removeTodoFromProject(index) {
-		console.log(index);
+	removeTodoFromProject(deleteTodo, projectTitle) {
+		const projects = this.allProjects;
+		for (let i = 0; i < projects.length; i++) {
+			for (let j = 0; j < projects[i].todos.length; j++) {
+				const todo = projects[i].todos[j];
+				if (projects[i].title === projectTitle && todo.title === deleteTodo.title) {
+					projects[i].removeTodo(j);
+				}
+			}
+		}
 	}
 
 	pushNewTodo(array) {
-		this.allProjects.forEach(function(project) {
-			if (project.title === array[array.length - 1]) {
-				project.todos.push(new Todo(array[0], array[1], array[2], array[3]));
+		for (let i = 0; i < this.allProjects.length; i++) {
+			if (this.allProjects[i].title === array[array.length - 1]) {
+				this.allProjects[i].todos.push(new Todo(array[0], array[1], array[2], array[3]));
 			}
-		});
+		}
 	}
 }
