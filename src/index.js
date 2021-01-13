@@ -24,7 +24,7 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	}
 
 	function _makeNewProject() {
-		subDom.newProjectForm(date);
+		subDom.newProjectForm();
 	}
 
 	function _displayProjects() {
@@ -56,8 +56,18 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 		projectController.removeProject(index);
 	}
 
+	function _resubmitForm(_msg, formArray) {
+		// When formArray gets fixed, will need a new check here
+		if (formArray[0].length === 1) {
+			subDom.newProjectForm();
+		} else {
+			subDom.newTodoForm(projectController.getAllProjects(), formArray);
+		}
+	}
+
 	PubSub.subscribe('NEW_TODO', _pushTodosListener);
 	PubSub.subscribe('NEW_PROJECT', _pushProjectsListener);
+	PubSub.subscribe('RESUBMIT_FORM', _resubmitForm);
 	PubSub.subscribe('REMOVE_TODO', _removeTodoListener);
 	PubSub.subscribe('REMOVE_PROJECT', _removeProjectListener);
 	PubSub.subscribe('REFRESH_DISPLAY', _displayProjects);

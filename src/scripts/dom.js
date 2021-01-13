@@ -5,7 +5,7 @@ const subContentDOM = (date) => {
 		subContent.innerHTML = '';
 	}
 
-	function newTodoForm(allProjectsArray) {
+	function newTodoForm(allProjectsArray, formData = []) {
 		_clearPage();
 
 		const newTodoContainer = document.createElement('div');
@@ -134,10 +134,19 @@ const subContentDOM = (date) => {
 
 		subContent.appendChild(newTodoContainer);
 
+		if (formData.length > 0) {
+			_populateForm(formData);
+		}
+
 		createButton.addEventListener('click', _submitForm);
 		createButton.addEventListener('click', _clearForm);
 
 		cancelButton.addEventListener('click', _clearPage);
+	}
+
+	function _populateForm(formData) {
+		// the form elements are being grabbed, but the data within is not
+		console.log(formData);
 	}
 
 	function newProjectForm() {
@@ -253,16 +262,22 @@ const subContentDOM = (date) => {
 		container.appendChild(todoItem);
 	}
 
-	// Need to run a check to ensure title does not match another title
 	function _submitForm() {
 		const inputs = document.querySelectorAll('input');
 		const select = document.querySelector('select');
 
-		// Input info currently gets lost after the alert is raised
+		// Write a function so that if the input or select check trigger:
+		// the form values/data are grabbed and packaged into array
+		// THEN sent back to _populateForm
+		// At the moment, the form elements without their data are being sent
 		if (_inputsCheck(inputs)) {
 			alert('Please complete all elements of the form!');
+			// data = _getFormValues(inputs, select)
+			PubSub.publish('RESUBMIT_FORM', [ inputs, select ]); // (replace with data)
 		} else if (select && select.value === '') {
 			alert('Please choose a project!');
+			// data = _getFormValues(inputs)
+			PubSub.publish('RESUBMIT_FORM', [ inputs, select ]); // (replace with data)
 		} else {
 			// wrap below into a separate method?
 			let formValues = [];
@@ -300,6 +315,8 @@ const subContentDOM = (date) => {
 		}
 		return false;
 	}
+
+	// function _getFormValues(inputs, select = undefined) {}
 
 	function _clearForm() {
 		const inputs = document.querySelectorAll('input');
