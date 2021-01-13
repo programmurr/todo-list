@@ -330,7 +330,7 @@ const subContentDOM = (date) => {
 	function _emptyDiv(items) {
 		const empty = document.createElement('p');
 		empty.id = 'div-empty';
-		empty.textContent = `No ${items} here!`;
+		empty.textContent = `You're so organised! No ${items} here!`;
 		subContent.appendChild(empty);
 	}
 

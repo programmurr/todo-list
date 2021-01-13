@@ -38,8 +38,12 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	}
 
 	function _pushProjectsListener(_msg, projectArray) {
-		projectController.addNewProject(projectArray);
-		alert('New Project added!');
+		if (projectController.checkProject(projectArray) === false) {
+			alert('Please give your project a unique name!');
+		} else {
+			projectController.addNewProject(projectArray);
+			alert('New Project added!');
+		}
 	}
 
 	function _removeTodoListener(_msg, domArray) {

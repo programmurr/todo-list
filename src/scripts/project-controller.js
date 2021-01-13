@@ -22,6 +22,15 @@ export default class ProjectController {
 		return this.allProjects.push(newProject);
 	}
 
+	checkProject(projectArray) {
+		for (let i = 0; i < this.allProjects.length; i++) {
+			if (this.allProjects[i].title === projectArray[0]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	removeProject(index) {
 		return this.allProjects.splice(index, 1);
 	}
