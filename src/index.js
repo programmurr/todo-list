@@ -47,8 +47,14 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 		projectController.removeTodoFromProject(todo, domArray[1]);
 	}
 
+	function _removeProjectListener(_msg, projectId) {
+		const index = parseInt(projectId.slice(-1));
+		projectController.removeProject(index);
+	}
+
 	PubSub.subscribe('NEW_TODO', _pushTodosListener);
 	PubSub.subscribe('NEW_PROJECT', _pushProjectsListener);
 	PubSub.subscribe('REMOVE_TODO', _removeTodoListener);
+	PubSub.subscribe('REMOVE_PROJECT', _removeProjectListener);
 	PubSub.subscribe('REFRESH_DISPLAY', _displayProjects);
 })();

@@ -198,7 +198,15 @@ const subContentDOM = (date) => {
 				projectTitle.id = `project-title${i}`;
 				projectTitle.textContent = allProjectsArray[i].title;
 
+				const completeButton = document.createElement('button');
+				completeButton.className = 'project-item';
+				completeButton.textContent = 'Complete';
+
+				completeButton.addEventListener('click', _removeProject);
+				completeButton.addEventListener('click', _refreshDisplay);
+
 				projectDiv.appendChild(projectTitle);
+				projectDiv.appendChild(completeButton);
 
 				allProjectsArray[i].todos.forEach(function(todo) {
 					_displayTodo(projectDiv, todo, i);
@@ -245,34 +253,6 @@ const subContentDOM = (date) => {
 		container.appendChild(todoItem);
 	}
 
-	function _inputsCheck(inputs) {
-		let counter = 0;
-		for (let i = 0; i < inputs.length; i++) {
-			if (inputs[i].type === 'text' && inputs[i].value === '') {
-				return true;
-			} else if (inputs[i].type === 'radio' && inputs[i].checked === false) {
-				counter++;
-			}
-			if (counter === 3) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	function _clearForm() {
-		const inputs = document.querySelectorAll('input');
-		inputs.forEach(function(input) {
-			if (input.type === 'text') {
-				input.value = '';
-			} else if (input.type === 'radio') {
-				input.checked = false;
-			} else if (input.type === 'date') {
-				input.value = date;
-			}
-		});
-	}
-
 	// Need to run a check to ensure title does not match another title
 	function _submitForm() {
 		const inputs = document.querySelectorAll('input');
@@ -306,9 +286,41 @@ const subContentDOM = (date) => {
 		}
 	}
 
+	function _inputsCheck(inputs) {
+		let counter = 0;
+		for (let i = 0; i < inputs.length; i++) {
+			if (inputs[i].type === 'text' && inputs[i].value === '') {
+				return true;
+			} else if (inputs[i].type === 'radio' && inputs[i].checked === false) {
+				counter++;
+			}
+			if (counter === 3) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function _clearForm() {
+		const inputs = document.querySelectorAll('input');
+		inputs.forEach(function(input) {
+			if (input.type === 'text') {
+				input.value = '';
+			} else if (input.type === 'radio') {
+				input.checked = false;
+			} else if (input.type === 'date') {
+				input.value = date;
+			}
+		});
+	}
+
 	function _removeTodo() {
 		const projectTitle = this.parentElement.parentElement.querySelector('h3');
 		PubSub.publish('REMOVE_TODO', [ this.parentElement, projectTitle.textContent ]);
+	}
+
+	function _removeProject() {
+		PubSub.publish('REMOVE_PROJECT', this.parentElement.id);
 	}
 
 	function _refreshDisplay() {
