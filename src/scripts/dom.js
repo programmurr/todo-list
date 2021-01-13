@@ -229,7 +229,7 @@ const subContentDOM = (date) => {
 		completeButton.textContent = 'Complete';
 
 		completeButton.addEventListener('click', _removeTodo);
-		// completeButton.addEventListener('click', _refreshDisplay);
+		completeButton.addEventListener('click', _refreshDisplay);
 
 		title.textContent = todo.title;
 		description.textContent = todo.description;
@@ -312,7 +312,6 @@ const subContentDOM = (date) => {
 	}
 
 	function _refreshDisplay() {
-		// TODO: Project lgoic compelte - now work on this
 		PubSub.publish('REFRESH_DISPLAY', 'blank');
 	}
 

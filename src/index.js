@@ -5,6 +5,7 @@ import subContentDOM from './scripts/dom.js';
 import ProjectController from './scripts/project-controller.js';
 import HTMLTodoParser from './scripts/html-todo-parser.js';
 // Make a seperate DOM Controller for nav bar?
+// Add Complete button to Project
 
 (function() {
 	const date = format(Date.now(), 'yyyy-MM-dd');
@@ -49,4 +50,5 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	PubSub.subscribe('NEW_TODO', _pushTodosListener);
 	PubSub.subscribe('NEW_PROJECT', _pushProjectsListener);
 	PubSub.subscribe('REMOVE_TODO', _removeTodoListener);
+	PubSub.subscribe('REFRESH_DISPLAY', _displayProjects);
 })();
