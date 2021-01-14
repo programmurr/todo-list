@@ -5,7 +5,6 @@ import subContentDOM from './scripts/dom.js';
 import ProjectController from './scripts/project-controller.js';
 import HTMLTodoParser from './scripts/html-todo-parser.js';
 // Make a seperate DOM Controller for nav bar?
-// Add Complete button to Project
 
 (function() {
 	const date = format(Date.now(), 'yyyy-MM-dd');
@@ -56,12 +55,11 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 		projectController.removeProject(index);
 	}
 
-	function _resubmitForm(_msg, formArray) {
-		// When formArray gets fixed, will need a new check here
-		if (formArray[0].length === 1) {
+	function _resubmitForm(_msg, formData) {
+		if (Object.keys(formData).length < 2) {
 			subDom.newProjectForm();
 		} else {
-			subDom.newTodoForm(projectController.getAllProjects(), formArray);
+			subDom.newTodoForm(projectController.getAllProjects(), formData);
 		}
 	}
 

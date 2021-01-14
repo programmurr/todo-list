@@ -5,7 +5,7 @@ const subContentDOM = (date) => {
 		subContent.innerHTML = '';
 	}
 
-	function newTodoForm(allProjectsArray, formData = []) {
+	function newTodoForm(allProjectsArray, formData = {}) {
 		_clearPage();
 
 		const newTodoContainer = document.createElement('div');
@@ -134,8 +134,8 @@ const subContentDOM = (date) => {
 
 		subContent.appendChild(newTodoContainer);
 
-		if (formData.length > 0) {
-			_populateForm(formData);
+		if (Object.keys(formData).length > 0) {
+			_populateForm(formData, titleInput, descriptionInput, dueDate, selectProject);
 		}
 
 		createButton.addEventListener('click', _submitForm);
@@ -144,9 +144,11 @@ const subContentDOM = (date) => {
 		cancelButton.addEventListener('click', _clearPage);
 	}
 
-	function _populateForm(formData) {
-		// the form elements are being grabbed, but the data within is not
-		console.log(formData);
+	function _populateForm(formData, titleInput, descriptionInput, dueDate, selectProject) {
+		titleInput.value = formData['title-input'];
+		descriptionInput.value = formData['description-input'];
+		dueDate.value = formData['new-due-date'];
+		selectProject.value = formData['project-select'];
 	}
 
 	function newProjectForm() {
@@ -228,6 +230,7 @@ const subContentDOM = (date) => {
 		}
 		subContent.appendChild(allProjectsContainer);
 	}
+
 	// Change 'complete' button to a tick?
 	function _displayTodo(container, todo, i) {
 		const todoItem = document.createElement('ul');
@@ -266,18 +269,14 @@ const subContentDOM = (date) => {
 		const inputs = document.querySelectorAll('input');
 		const select = document.querySelector('select');
 
-		// Write a function so that if the input or select check trigger:
-		// the form values/data are grabbed and packaged into array
-		// THEN sent back to _populateForm
-		// At the moment, the form elements without their data are being sent
 		if (_inputsCheck(inputs)) {
 			alert('Please complete all elements of the form!');
-			// data = _getFormValues(inputs, select)
-			PubSub.publish('RESUBMIT_FORM', [ inputs, select ]); // (replace with data)
+			const formData = _getFormValues(inputs, select);
+			PubSub.publish('RESUBMIT_FORM', formData);
 		} else if (select && select.value === '') {
 			alert('Please choose a project!');
-			// data = _getFormValues(inputs)
-			PubSub.publish('RESUBMIT_FORM', [ inputs, select ]); // (replace with data)
+			const formData = _getFormValues(inputs);
+			PubSub.publish('RESUBMIT_FORM', formData);
 		} else {
 			// wrap below into a separate method?
 			let formValues = [];
@@ -316,7 +315,16 @@ const subContentDOM = (date) => {
 		return false;
 	}
 
-	// function _getFormValues(inputs, select = undefined) {}
+	function _getFormValues(inputs, select = undefined) {
+		let data = {};
+		inputs.forEach(function(input) {
+			data[input.id] = input.value;
+		});
+		if (select != undefined) {
+			data[select.id] = select.value;
+		}
+		return data;
+	}
 
 	function _clearForm() {
 		const inputs = document.querySelectorAll('input');
