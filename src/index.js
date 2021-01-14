@@ -18,6 +18,47 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	projectsTab.addEventListener('click', _displayProjects);
 	newProjectTab.addEventListener('click', _makeNewProject);
 
+	(function() {
+		function storageAvailable(type) {
+			var storage;
+			try {
+				storage = window[type];
+				var x = '__storage_test__';
+				storage.setItem(x, x);
+				storage.removeItem(x);
+				return true;
+			} catch (e) {
+				return (
+					e instanceof DOMException &&
+					(e.code === 22 ||
+						e.code === 1014 ||
+						e.name === 'QuotaExceededError' ||
+						e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+					(storage && storage.length !== 0)
+				);
+			}
+		}
+
+		if (storageAvailable('localStorage')) {
+			if (
+				localStorage.localProjects.length === 1 &&
+				localStorage.localProjects[0].title === 'My First Project' &&
+				localStorage.localProjects[0].todos.length === 0
+			) {
+				_updateLocalStorage();
+			} else {
+				projectController.allProjects = JSON.parse(localStorage.getItem('localProjects'));
+			}
+		} else {
+			alert('You do not have localStorage enabled!\nYou will not be able to save your todos!');
+		}
+	})();
+
+	function _updateLocalStorage() {
+		localStorage.setItem('localProjects', JSON.stringify(projectController.getAllProjects()));
+		console.log(localStorage);
+	}
+
 	function _makeNewTodo() {
 		subDom.newTodoForm(projectController.getAllProjects());
 	}
@@ -27,12 +68,13 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	}
 
 	function _displayProjects() {
-		const allProjectsArray = projectController.getAllProjects();
-		subDom.projectsPage(allProjectsArray);
+		subDom.projectsPage(projectController.getAllProjects());
 	}
 
 	function _pushTodosListener(_msg, todoArray) {
 		projectController.pushNewTodo(todoArray);
+		_updateLocalStorage();
+		console.log(localStorage);
 		alert('New Todo added!');
 	}
 
@@ -41,6 +83,8 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 			alert('Please give your project a unique name!');
 		} else {
 			projectController.addNewProject(projectArray);
+			_updateLocalStorage();
+			console.log(localStorage);
 			alert('New Project added!');
 		}
 	}
@@ -48,11 +92,15 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	function _removeTodoListener(_msg, domArray) {
 		const todo = HTMLTodoParser.htmlConvertTodo(domArray[0]);
 		projectController.removeTodoFromProject(todo, domArray[1]);
+		_updateLocalStorage();
+		console.log(localStorage);
 	}
 
 	function _removeProjectListener(_msg, projectId) {
 		const index = parseInt(projectId.slice(-1));
 		projectController.removeProject(index);
+		_updateLocalStorage();
+		console.log(localStorage);
 	}
 
 	function _resubmitForm(_msg, formData) {

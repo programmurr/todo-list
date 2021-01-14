@@ -5,12 +5,7 @@ import Todo from './todo';
 export default class ProjectController {
 	constructor() {
 		// Do NOT remove First Project when live, but remove the Todos
-		this.allProjects = [
-			new Project('My First Project', [
-				new Todo('test', 'test', '11-11-1111', '1'),
-				new Todo('test2', 'test2', '22-22-2222', '2')
-			])
-		];
+		this.allProjects = [ new Project('My First Project', []) ];
 	}
 
 	getAllProjects() {
