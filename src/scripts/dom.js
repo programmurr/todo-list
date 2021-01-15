@@ -5,6 +5,22 @@ const subContentDOM = (date) => {
 		subContent.innerHTML = '';
 	}
 
+	function homeTab() {
+		_clearPage();
+
+		const welcomeText = document.createElement('p');
+		welcomeText.id = 'home-text';
+
+		welcomeText.textContent = `
+		Welcome to your Todo Page! To get you started I've made you a default project.
+		You can add projects to that, or erase it and start your own! Just keep in mind
+		that you need to have a Project in order to make Todos! Now go organize your life,
+		you hot mess! 
+		`;
+
+		subContent.appendChild(welcomeText);
+	}
+
 	function newTodoForm(allProjectsArray, formData = {}) {
 		_clearPage();
 
@@ -359,7 +375,7 @@ const subContentDOM = (date) => {
 		subContent.appendChild(empty);
 	}
 
-	return { newTodoForm, newProjectForm, projectsPage };
+	return { homeTab, newTodoForm, newProjectForm, projectsPage };
 };
 
 export default subContentDOM;

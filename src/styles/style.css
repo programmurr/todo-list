@@ -19,12 +19,19 @@ body {
 	cursor: pointer;
 }
 
-#new-todo {
+#new-todo,
+#new-project,
+#home,
+#projects {
 	margin-right: 5px;
 }
 
-#new-project {
-	margin-right: 5px;
+#new-todo:hover,
+#new-project:hover,
+#home:hover,
+#projects:hover {
+	background-color: black;
+	color: white;
 }
 
 #new-todo-container {

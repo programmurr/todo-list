@@ -10,13 +10,15 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	const date = format(Date.now(), 'yyyy-MM-dd');
 	const subDom = subContentDOM(date);
 	const projectController = new ProjectController();
+	const homeTab = document.querySelector('#home');
 	const newTodoTab = document.querySelector('#new-todo');
 	const newProjectTab = document.querySelector('#new-project');
 	const projectsTab = document.querySelector('#projects');
 
+	homeTab.addEventListener('click', _homeTab);
 	newTodoTab.addEventListener('click', _makeNewTodo);
-	projectsTab.addEventListener('click', _displayProjects);
 	newProjectTab.addEventListener('click', _makeNewProject);
+	projectsTab.addEventListener('click', _displayProjects);
 
 	(function() {
 		function storageAvailable(type) {
@@ -52,11 +54,15 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 		} else {
 			alert('You do not have localStorage enabled!\nYou will not be able to save your todos!');
 		}
+		_homeTab();
 	})();
 
 	function _updateLocalStorage() {
 		localStorage.setItem('localProjects', JSON.stringify(projectController.getAllProjects()));
-		console.log(localStorage);
+	}
+
+	function _homeTab() {
+		subDom.homeTab();
 	}
 
 	function _makeNewTodo() {
@@ -74,7 +80,6 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	function _pushTodosListener(_msg, todoArray) {
 		projectController.pushNewTodo(todoArray);
 		_updateLocalStorage();
-		console.log(localStorage);
 		alert('New Todo added!');
 	}
 
@@ -84,7 +89,6 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 		} else {
 			projectController.addNewProject(projectArray);
 			_updateLocalStorage();
-			console.log(localStorage);
 			alert('New Project added!');
 		}
 	}
@@ -93,14 +97,12 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 		const todo = HTMLTodoParser.htmlConvertTodo(domArray[0]);
 		projectController.removeTodoFromProject(todo, domArray[1]);
 		_updateLocalStorage();
-		console.log(localStorage);
 	}
 
 	function _removeProjectListener(_msg, projectId) {
 		const index = parseInt(projectId.slice(-1));
 		projectController.removeProject(index);
 		_updateLocalStorage();
-		console.log(localStorage);
 	}
 
 	function _resubmitForm(_msg, formData) {
