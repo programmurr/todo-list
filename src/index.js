@@ -4,7 +4,6 @@ import './styles/style.css';
 import subContentDOM from './scripts/dom.js';
 import ProjectController from './scripts/project-controller.js';
 import HTMLTodoParser from './scripts/html-todo-parser.js';
-// Make a seperate DOM Controller for nav bar?
 
 (function() {
 	const date = format(Date.now(), 'yyyy-MM-dd');

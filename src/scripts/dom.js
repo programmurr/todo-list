@@ -34,6 +34,7 @@ const subContentDOM = (date) => {
 		titleInput.className = 'new-input';
 		titleInput.id = 'title-input';
 		titleInput.name = 'title';
+		titleInput.placeholder = 'Vacuum the Kitchen';
 		const titleLabel = document.createElement('label');
 		titleLabel.for = 'title';
 		titleLabel.className = 'new-input';
@@ -44,6 +45,7 @@ const subContentDOM = (date) => {
 		descriptionInput.className = 'new-input';
 		descriptionInput.id = 'description-input';
 		descriptionInput.name = 'description';
+		descriptionInput.placeholder = 'Make sure the Dyson is charged and the filters cleaned';
 		const descriptionLabel = document.createElement('label');
 		descriptionLabel.for = 'description';
 		descriptionLabel.className = 'new-input';
@@ -117,7 +119,6 @@ const subContentDOM = (date) => {
 			projectOption.textContent = project.title;
 			selectProject.appendChild(projectOption);
 		});
-		selectProjectLabel.appendChild(selectProject);
 
 		// Buttons
 		const createButton = document.createElement('button');
@@ -130,21 +131,21 @@ const subContentDOM = (date) => {
 		cancelButton.id = 'cancel-new';
 		cancelButton.textContent = 'Cancel';
 
-		// Add to newTodoContainer div
-		titleLabel.appendChild(titleInput);
-		descriptionLabel.appendChild(descriptionInput);
-		dueDateLabel.appendChild(dueDate);
-		priority1Label.appendChild(priority1);
-		priority2Label.appendChild(priority2);
-		priority3Label.appendChild(priority3);
-
+		// LET'S APPEND BABYYYYYY
 		newTodoContainer.appendChild(titleLabel);
+		newTodoContainer.appendChild(titleInput);
 		newTodoContainer.appendChild(descriptionLabel);
+		newTodoContainer.appendChild(descriptionInput);
 		newTodoContainer.appendChild(dueDateLabel);
+		newTodoContainer.appendChild(dueDate);
 		newTodoContainer.appendChild(priority1Label);
+		newTodoContainer.appendChild(priority1);
 		newTodoContainer.appendChild(priority2Label);
+		newTodoContainer.appendChild(priority2);
 		newTodoContainer.appendChild(priority3Label);
+		newTodoContainer.appendChild(priority3);
 		newTodoContainer.appendChild(selectProjectLabel);
+		newTodoContainer.appendChild(selectProject);
 		newTodoContainer.appendChild(createButton);
 		newTodoContainer.appendChild(cancelButton);
 
@@ -179,6 +180,7 @@ const subContentDOM = (date) => {
 		titleInput.className = 'new-project-div';
 		titleInput.id = 'project-title';
 		titleInput.name = 'project-title';
+		titleInput.placeholder = 'Renovate the Living Room';
 		const titleLabel = document.createElement('label');
 		titleLabel.for = 'project-title';
 		titleLabel.className = 'new-project-div';
@@ -247,7 +249,6 @@ const subContentDOM = (date) => {
 		subContent.appendChild(allProjectsContainer);
 	}
 
-	// Change 'complete' button to a tick?
 	function _displayTodo(container, todo, i) {
 		const todoItem = document.createElement('ul');
 		todoItem.className = 'todo-item';
