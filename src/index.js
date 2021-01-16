@@ -77,7 +77,6 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	}
 
 	function _pushTodosListener(_msg, todoArray) {
-		console.log(todoArray);
 		projectController.pushNewTodo(todoArray);
 		_updateLocalStorage();
 		alert('New Todo added!');
@@ -95,6 +94,10 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 
 	function _removeTodoListener(_msg, domArray) {
 		const todo = HTMLTodoParser.htmlConvertTodo(domArray[0]);
+		console.log(todo);
+		console.log(domArray);
+		console.log(domArray[0]);
+		console.log(domArray[1]);
 		projectController.removeTodoFromProject(todo, domArray[1]);
 		_updateLocalStorage();
 	}

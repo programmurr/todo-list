@@ -14,8 +14,8 @@ const subContentDOM = (date) => {
 		welcomeText.textContent = `
 		Welcome to your Todo Page! To get you started I've made you a default project.
 		You can add projects to that, or erase it and start your own! Just keep in mind
-		that you need to have a Project in order to make Todos! Now go organize your life,
-		you hot mess! 
+		that you need to have a Project in order to make Todos! When you've made a project, 
+		click on it to see the todos within. Now go organize your life, you hot mess! 
 		`;
 
 		subContent.appendChild(welcomeText);
@@ -226,13 +226,23 @@ const subContentDOM = (date) => {
 		if (allProjectsArray.length > 0) {
 			for (let i = 0; i < allProjectsArray.length; i++) {
 				const projectDiv = document.createElement('div');
-				projectDiv.className = 'all-projects';
+				projectDiv.className = 'project-todos';
 				projectDiv.id = `project${i}`;
+
+				const headerDiv = document.createElement('div');
+				headerDiv.className = 'all-projects';
+				headerDiv.id = 'header-div';
 
 				const projectTitle = document.createElement('h3');
 				projectTitle.className = 'all-projects';
 				projectTitle.id = `project-title${i}`;
 				projectTitle.textContent = allProjectsArray[i].title;
+
+				const viewTodos = document.createElement('button');
+				viewTodos.className = 'all-projects';
+				viewTodos.id = 'view-todos-button';
+				viewTodos.textContent = 'View Todos';
+				viewTodos.dataset.clicked = 'false';
 
 				const completeButton = document.createElement('button');
 				completeButton.className = 'project-item';
@@ -241,14 +251,26 @@ const subContentDOM = (date) => {
 				completeButton.addEventListener('click', _removeProject);
 				completeButton.addEventListener('click', _refreshDisplay);
 
-				projectDiv.appendChild(projectTitle);
-				projectDiv.appendChild(completeButton);
+				headerDiv.appendChild(projectTitle);
+				headerDiv.appendChild(viewTodos);
+				headerDiv.appendChild(completeButton);
+				allProjectsContainer.appendChild(headerDiv);
 
 				allProjectsArray[i].todos.forEach(function(todo) {
 					_displayTodo(projectDiv, todo, i);
 				});
 
-				allProjectsContainer.appendChild(projectDiv);
+				viewTodos.addEventListener('click', function(e) {
+					if (e.target.dataset.clicked === 'false') {
+						e.target.textContent = 'Hide Todos';
+						headerDiv.appendChild(projectDiv);
+						e.target.dataset.clicked = 'true';
+					} else {
+						headerDiv.removeChild(projectDiv);
+						e.target.dataset.clicked = 'false';
+						e.target.textContent = 'View Todos';
+					}
+				});
 			}
 		} else {
 			_emptyDiv('projects');
@@ -382,7 +404,7 @@ const subContentDOM = (date) => {
 	}
 
 	function _removeTodo() {
-		const projectTitle = this.parentElement.parentElement.querySelector('h3');
+		const projectTitle = this.parentElement.parentElement.parentElement.querySelector('h3');
 		PubSub.publish('REMOVE_TODO', [ this.parentElement, projectTitle.textContent ]);
 	}
 
