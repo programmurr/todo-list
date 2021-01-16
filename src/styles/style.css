@@ -65,9 +65,17 @@ textarea {
 	margin-bottom: 10px;
 }
 
+.new-input input,
+textarea {
+	padding-left: 5px;
+	font-size: 0.9rem;
+}
+
 .new-input button {
 	border: 1px solid black;
 	padding: 5px 2px;
+	grid-column-start: 1;
+	grid-column-end: 3;
 }
 
 .new-input button:hover {
@@ -81,16 +89,35 @@ textarea {
 .new-project-form {
 	margin-top: 10px;
 	display: grid;
-	justify-items: center;
-	width: 100%;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 5%;
 }
 
-.new-project-form {
-	display: grid;
+.new-project-form label {
+	align-self: center;
+	justify-self: right;
+}
+.new-project-form input {
+	height: 2rem;
+	align-self: center;
+	padding-left: 5px;
+	font-size: 0.9rem;
+}
+.new-project-form button {
+	border: 1px solid black;
+	padding: 5px 2px;
+	grid-column-start: 1;
+	grid-column-end: 3;
+	margin-top: 10px;
+}
+
+.new-project-form button:hover {
+	font-weight: bold;
 }
 
 textarea {
 	border: 1px solid black;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 h3 {
@@ -105,14 +132,19 @@ p {
 
 input {
 	border: 1px solid black;
-	margin-left: 5px;
 }
 
 ul {
+	list-style: none;
 	border: 1px solid black;
 	margin-top: 5px;
 }
 
 ::placeholder {
 	font-size: small;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#all-projects-container {
+	display: grid;
 }

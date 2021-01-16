@@ -11,8 +11,4 @@ export default class Project {
 	addTodo(todo) {
 		return this.todos.push(todo);
 	}
-
-	removeTodo(index) {
-		return this.todos.splice(index, 1);
-	}
 }

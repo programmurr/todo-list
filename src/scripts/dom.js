@@ -208,9 +208,8 @@ const subContentDOM = (date) => {
 		cancelButton.addEventListener('click', _clearPage);
 		cancelButton.addEventListener('click', _goHome);
 
-		titleLabel.appendChild(titleInput);
-
 		newProjectContainer.appendChild(titleLabel);
+		newProjectContainer.appendChild(titleInput);
 		newProjectContainer.appendChild(createButton);
 		newProjectContainer.appendChild(cancelButton);
 

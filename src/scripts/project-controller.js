@@ -36,7 +36,7 @@ export default class ProjectController {
 			for (let j = 0; j < projects[i].todos.length; j++) {
 				const todo = projects[i].todos[j];
 				if (projects[i].title === projectTitle && todo.title === deleteTodo.title) {
-					projects[i].removeTodo(j);
+					projects[i].todos.splice(j, 1);
 				}
 			}
 		}
@@ -45,7 +45,7 @@ export default class ProjectController {
 	pushNewTodo(array) {
 		for (let i = 0; i < this.allProjects.length; i++) {
 			if (this.allProjects[i].title === array[array.length - 1]) {
-				this.allProjects[i].todos.push(new Todo(array[0], array[3], array[1], array[3]));
+				this.allProjects[i].todos.push(new Todo(array[0], array[3], array[1], array[2]));
 			}
 		}
 	}
