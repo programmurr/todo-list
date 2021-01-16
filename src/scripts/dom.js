@@ -40,11 +40,13 @@ const subContentDOM = (date) => {
 		titleLabel.className = 'new-input';
 		titleLabel.textContent = 'Title';
 
-		const descriptionInput = document.createElement('input');
-		descriptionInput.type = 'text';
+		const descriptionInput = document.createElement('textarea');
+		// descriptionInput.type = 'text';
 		descriptionInput.className = 'new-input';
 		descriptionInput.id = 'description-input';
 		descriptionInput.name = 'description';
+		descriptionInput.rows = '5';
+		descriptionInput.cols = '30';
 		descriptionInput.placeholder = 'Make sure the Dyson is charged and the filters cleaned';
 		const descriptionLabel = document.createElement('label');
 		descriptionLabel.for = 'description';
@@ -159,6 +161,11 @@ const subContentDOM = (date) => {
 		createButton.addEventListener('click', _clearForm);
 
 		cancelButton.addEventListener('click', _clearPage);
+		cancelButton.addEventListener('click', _goHome);
+	}
+
+	function _goHome() {
+		PubSub.publish('GO_HOME', 'blank');
 	}
 
 	function _populateForm(formData, titleInput, descriptionInput, dueDate, selectProject) {
@@ -199,6 +206,7 @@ const subContentDOM = (date) => {
 		createButton.addEventListener('click', _submitForm);
 		createButton.addEventListener('click', _clearForm);
 		cancelButton.addEventListener('click', _clearPage);
+		cancelButton.addEventListener('click', _goHome);
 
 		titleLabel.appendChild(titleInput);
 
@@ -284,15 +292,16 @@ const subContentDOM = (date) => {
 
 	function _submitForm() {
 		const inputs = document.querySelectorAll('input');
+		const textarea = document.querySelector('textarea');
 		const select = document.querySelector('select');
 
-		if (_inputsCheck(inputs)) {
+		if (_inputsCheck(inputs, textarea)) {
 			alert('Please complete all elements of the form!');
-			const formData = _getFormValues(inputs, select);
+			const formData = _getFormValues(inputs, textarea, select);
 			PubSub.publish('RESUBMIT_FORM', formData);
 		} else if (select && select.value === '') {
 			alert('Please choose a project!');
-			const formData = _getFormValues(inputs);
+			const formData = _getFormValues(inputs, textarea);
 			PubSub.publish('RESUBMIT_FORM', formData);
 		} else {
 			// wrap below into a separate method?
@@ -305,6 +314,11 @@ const subContentDOM = (date) => {
 					formValues.push(input.value);
 				}
 			});
+
+			if (textarea) {
+				formValues.push(textarea.value);
+			}
+
 			if (select) {
 				formValues.push(select.value);
 			}
@@ -317,7 +331,7 @@ const subContentDOM = (date) => {
 		}
 	}
 
-	function _inputsCheck(inputs) {
+	function _inputsCheck(inputs, textarea) {
 		let counter = 0;
 		for (let i = 0; i < inputs.length; i++) {
 			if (inputs[i].type === 'text' && inputs[i].value === '') {
@@ -329,14 +343,20 @@ const subContentDOM = (date) => {
 				return true;
 			}
 		}
+		if (textarea && textarea.value === '') {
+			return true;
+		}
 		return false;
 	}
 
-	function _getFormValues(inputs, select = undefined) {
+	function _getFormValues(inputs, textarea, select = undefined) {
 		let data = {};
 		inputs.forEach(function(input) {
 			data[input.id] = input.value;
 		});
+		if (textarea) {
+			data[textarea.id] = textarea.value;
+		}
 		if (select != undefined) {
 			data[select.id] = select.value;
 		}
@@ -345,6 +365,8 @@ const subContentDOM = (date) => {
 
 	function _clearForm() {
 		const inputs = document.querySelectorAll('input');
+		const textarea = document.querySelector('textarea');
+
 		inputs.forEach(function(input) {
 			if (input.type === 'text') {
 				input.value = '';
@@ -354,6 +376,10 @@ const subContentDOM = (date) => {
 				input.value = date;
 			}
 		});
+
+		if (textarea) {
+			textarea.value = '';
+		}
 	}
 
 	function _removeTodo() {

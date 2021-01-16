@@ -60,7 +60,7 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 		localStorage.setItem('localProjects', JSON.stringify(projectController.getAllProjects()));
 	}
 
-	function _homeTab() {
+	function _homeTab(_msg = 'unused', _data = 'unused') {
 		subDom.homeTab();
 	}
 
@@ -118,4 +118,5 @@ import HTMLTodoParser from './scripts/html-todo-parser.js';
 	PubSub.subscribe('REMOVE_TODO', _removeTodoListener);
 	PubSub.subscribe('REMOVE_PROJECT', _removeProjectListener);
 	PubSub.subscribe('REFRESH_DISPLAY', _displayProjects);
+	PubSub.subscribe('GO_HOME', _homeTab);
 })();

@@ -58,15 +58,11 @@ body {
 }
 
 .new-input input,
-button {
+button,
+textarea {
 	grid-column-start: 2;
 	grid-column-end: 3;
 	margin-bottom: 10px;
-}
-
-/* Change this to a textarea - will have to go back to JS */
-#description-input {
-	height: 100px;
 }
 
 .new-input button {
@@ -91,6 +87,10 @@ button {
 
 .new-project-form {
 	display: grid;
+}
+
+textarea {
+	border: 1px solid black;
 }
 
 h3 {

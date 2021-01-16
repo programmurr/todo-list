@@ -45,7 +45,7 @@ export default class ProjectController {
 	pushNewTodo(array) {
 		for (let i = 0; i < this.allProjects.length; i++) {
 			if (this.allProjects[i].title === array[array.length - 1]) {
-				this.allProjects[i].todos.push(new Todo(array[0], array[1], array[2], array[3]));
+				this.allProjects[i].todos.push(new Todo(array[0], array[3], array[1], array[3]));
 			}
 		}
 	}
